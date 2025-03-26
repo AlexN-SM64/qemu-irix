@@ -9608,7 +9608,7 @@ abi_long do_syscall(void *cpu_env, int num, abi_long arg1,
     case TARGET_NR_statfs64:
         if (!(p = lock_user_string(arg1)))
             goto efault;
-        ret = get_errno(statvfs(path(p), &stfs));
+        ret = get_errno(statvfs(path(p), &stvfs));
         unlock_user(p, arg1, 0);
 #endif
 #if defined(TARGET_NR_statfs64) || (defined(TARGET_ABI_IRIX) && defined(TARGET_ABI_MIPSN32))
@@ -9628,18 +9628,18 @@ abi_long do_syscall(void *cpu_env, int num, abi_long arg1,
 #endif
             /* __put_user(stfs.f_type, &target_stfs->f_type); not in statvfs
              * Use arg4 for irix reported type? */
-            __put_user(arg4, &target_stfs->f_type)
-            __put_user(stfs.f_bsize, &target_stfs->f_bsize);
-            __put_user(stfs.f_blocks, &target_stfs->f_blocks);
-            __put_user(stfs.f_bfree, &target_stfs->f_bfree);
-            __put_user(stfs.f_bavail, &target_stfs->f_bavail);
-            __put_user(stfs.f_files, &target_stfs->f_files);
-            __put_user(stfs.f_ffree, &target_stfs->f_ffree);
-            __put_user(stfs.f_namemax, &target_stfs->f_namelen);
-            __put_user(stfs.f_frsize, &target_stfs->f_frsize);
+            __put_user(arg4, &target_stfs->f_type);
+            __put_user(stvfs.f_bsize, &target_stfs->f_bsize);
+            __put_user(stvfs.f_blocks, &target_stfs->f_blocks);
+            __put_user(stvfs.f_bfree, &target_stfs->f_bfree);
+            __put_user(stvfs.f_bavail, &target_stfs->f_bavail);
+            __put_user(stvfs.f_files, &target_stfs->f_files);
+            __put_user(stvfs.f_ffree, &target_stfs->f_ffree);
+            __put_user(stvfs.f_namemax, &target_stfs->f_namelen);
+            __put_user(stvfs.f_frsize, &target_stfs->f_frsize);
             memset(target_stfs->f_spare, 0, sizeof(target_stfs->f_spare));
             /* Linux only value, irix doesn't use according to indy sys/statfs.h */
-            memset(target_stfs->f_fsid, 0, sizeof(target_stfs->f_fsid));
+            memset(&target_stfs->f_fsid, 0, sizeof(target_stfs->f_fsid));
 #ifdef TARGET_ABI_IRIX
             ret = copy_to_user(arg2, target_stfs, arg3);
 #else
@@ -9650,7 +9650,7 @@ abi_long do_syscall(void *cpu_env, int num, abi_long arg1,
 #endif
 #ifdef TARGET_NR_fstatfs64
     case TARGET_NR_fstatfs64:
-        ret = get_errno(fstatfs(arg1, &stfs));
+        ret = get_errno(fstatvfs(arg1, &stvfs));
         goto convert_statfs64;
 #endif
 #ifdef TARGET_NR_ioperm
@@ -13827,13 +13827,13 @@ abi_long do_syscall(void *cpu_env, int num, abi_long arg1,
             }
             break;
         case TARGET_NR_syssgi_pathconf:
-            if (arg3 == 1) {
-                if (!(p = lock_user_string(arg1)))
+            if (arg4 == 1) {
+                if (!(p = lock_user_string(arg2)))
                     goto efault;
-                ret = get_errno(pathconf(path(p), target_to_host_pathconf(arg2)));
-                unlock_user(p, arg1, 0);
+                ret = get_errno(pathconf(path(p), target_to_host_pathconf(arg3)));
+                unlock_user(p, arg2, 0);
             } else
-                ret = get_errno(fpathconf(arg1, target_to_host_pathconf(arg2)));
+                ret = get_errno(fpathconf(arg2, target_to_host_pathconf(arg3)));
             break;
         case TARGET_NR_syssgi_rusage:
             {
