@@ -28,8 +28,6 @@ Or, configure QEMU for irix userland emulation for macOS
 make && make install
 ```
 
-Note: only `irix-darwin-user` and `irix64-darwin-user` are allowed for building on macOS during succeeded workflows
-
 Note: macOS 11 Big Sur and above no longer supports building qemu-irix during failure workflows
 (see at top of the repo page and click the red cross at the end of commit message)
 
