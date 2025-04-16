@@ -1,38 +1,39 @@
 This QEMU patch introduces irix/solaris userland emulation. It currently runs
 only under linux and macOS (though BSD support would probably be feasable).
 
-### compiling
+### Compiling for Linux
 
 Configure QEMU for irix/solaris userland emulation for linux and compile (see the original
 QEMU README for further instructions):
 
 ```sh
-./configure
-    --prefix=/usr
-    --sysconfdir=/etc
-    --localstatedir=/var
-    --libexecdir=/usr/lib/qemu
-    --audio-drv-list=
-    --disable-bluez
-    --disable-sdl
-    --disable-gtk
-    --disable-vte
-    --disable-opengl
-    --disable-virglrenderer
-    --disable-blobs
-    --disable-tools
-    --disable-guest-agent
-    --target-list=irix-linux-user,irixn32-linux-user,irix64-linux-user,solaris-linux-user
-    --disable-capstone
-    --disable-debug-info
-    --disable-werror
+$ ./configure --prefix=/usr \
+    --sysconfdir=/etc \
+    --localstatedir=/var \
+    --libexecdir=/usr/lib/qemu \
+    --audio-drv-list= \
+    --disable-bluez \
+    --disable-sdl \
+    --disable-gtk \
+    --disable-vte \
+    --disable-opengl \
+    --disable-virglrenderer \
+    --disable-blobs \
+    --disable-tools \
+    --disable-guest-agent \
+    --target-list=irix-linux-user,irixn32-linux-user,irix64-linux-user,solaris-linux-user \
+    --disable-capstone \
+    --disable-debug-info \
+    --disable-werror \
     --extra-cflags="-fmacro-prefix-map=${srcdir}=."
+$ make && sudo make install
 ```
+#### Note:
+You may want to remove conflicting docs and binaries that *may* conflict with QEMU in the following directories: `usr/lib` and `usr/share`
 
-Or, configure QEMU for irix userland emulation for macOS
-
+### Compiling for macOS
 ```sh
-./configure --target-list=irix-darwin-user \
+$ ./configure --target-list=irix-darwin-user \
     --disable-werror \
     --disable-vnc \
     --disable-sdl \
@@ -43,7 +44,7 @@ Or, configure QEMU for irix userland emulation for macOS
     --disable-hax \
     --disable-hvf \
     --disable-tools
-make && make install
+$ make && make install
 ```
 
 Note: macOS 11 Big Sur and above no longer supports building qemu-irix during failure workflows
