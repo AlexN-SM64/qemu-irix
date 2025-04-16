@@ -24,8 +24,7 @@ $ ./configure --prefix=/usr \
     --target-list=irix-linux-user,irixn32-linux-user,irix64-linux-user,solaris-linux-user \
     --disable-capstone \
     --disable-debug-info \
-    --disable-werror \
-    --extra-cflags="-fmacro-prefix-map=${srcdir}=."
+    --disable-werror
 $ make && sudo make install
 ```
 #### Note:
