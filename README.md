@@ -7,8 +7,26 @@ Configure QEMU for irix/solaris userland emulation for linux and compile (see th
 QEMU README for further instructions):
 
 ```sh
-configure --target-list=irix-linux-user,irixn32-linux-user,irix64-linux-user,solaris-linux-user --disable-werror
-make && make install
+./configure
+    --prefix=/usr
+    --sysconfdir=/etc
+    --localstatedir=/var
+    --libexecdir=/usr/lib/qemu
+    --audio-drv-list=
+    --disable-bluez
+    --disable-sdl
+    --disable-gtk
+    --disable-vte
+    --disable-opengl
+    --disable-virglrenderer
+    --disable-blobs
+    --disable-tools
+    --disable-guest-agent
+    --target-list=irix-linux-user,irixn32-linux-user,irix64-linux-user,solaris-linux-user
+    --disable-capstone
+    --disable-debug-info
+    --disable-werror
+    --extra-cflags="-fmacro-prefix-map=${srcdir}=."
 ```
 
 Or, configure QEMU for irix userland emulation for macOS
